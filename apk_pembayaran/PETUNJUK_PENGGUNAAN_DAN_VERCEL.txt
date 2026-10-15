@@ -1,0 +1,22 @@
+PANDUAN CEPAT DEPLOY & PENGGUNAAN APLIKASI KEUANGAN (VERSI 2.5)
+Yayasan Ar Rohman Pasir Gintung • Al Mumtaz Finance
+Tanggal Rilis: 14 Oktober 2026
+
+ISI PAKET INI:
+1. index.html & folder assets/ -> Web build utama siap hosting (Vercel / Netlify / cPanel).
+2. al-mumtaz-finance-offline-single-file.html -> File HTML mandiri (bisa langsung di-double click tanpa server).
+3. vercel.json -> Konfigurasi otomatis untuk routing Vercel SPA (tanpa error 404 saat refresh).
+4. _redirects -> Konfigurasi untuk Netlify SPA.
+
+CARA HOSTING DI VERCEL (GRATIS):
+1. Buka vercel.com lalu login.
+2. Unggah isi folder ini atau hubungkan repositori GitHub Anda.
+3. Vercel akan otomatis mengenali framework Vite dan file vercel.json.
+4. Klik 'Deploy'. Dalam 1 menit website keuangan Anda sudah aktif online dengan HTTPS!
+
+FITUR TERBARU VERSI 2.5:
+- Halaman Login Modern dengan latar arsitektur skyscraper dan kartu glassmorphism.
+- Route Protection (wajib login sebelum masuk ke menu apapun).
+- Dialog Konfirmasi Logout pop-up ("Apakah Anda yakin ingin keluar?").
+- Skema warna elegan Warm Orange & Amber Gold seragam.
+- Unduh paket pembaruan instan.

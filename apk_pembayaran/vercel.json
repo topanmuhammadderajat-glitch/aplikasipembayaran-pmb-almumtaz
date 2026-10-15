@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/((?!assets/|al-mumtaz|yayasan|favicon|.*\\..*).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

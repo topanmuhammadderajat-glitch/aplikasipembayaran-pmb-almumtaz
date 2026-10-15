@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 520" width="100%" height="100%">
+  <!-- Al Mumtaz Boarding School Official Vector Logo -->
+  <defs>
+    <filter id="softGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12" />
+    </filter>
+  </defs>
+
+  <g transform="translate(0, 10)">
+    <!-- 1. Outer Orange Arch -->
+    <path d="M 175,230 L 175,120 C 175,55 250,20 250,20 C 250,20 325,55 325,120 L 325,230" 
+          fill="none" stroke="#f97316" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- 2. Inner Green Arch -->
+    <path d="M 200,230 L 200,126 C 200,80 250,52 250,52 C 250,52 300,80 300,126 L 300,230" 
+          fill="none" stroke="#16a34a" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- 3. Arabic Calligraphy "الممتاز" in the arch center -->
+    <g fill="#ea580c" text-anchor="middle">
+      <text x="250" y="145" font-family="'Amiri', 'Traditional Arabic', 'Scheherazade New', 'Noto Naskh Arabic', serif" font-size="44" font-weight="bold" letter-spacing="2">
+        الممتاز
+      </text>
+    </g>
+
+    <!-- 4. Fountain Pen Nib (Pena Ilmu / Keilmuan) pointing up -->
+    <path d="M 250,150 L 278,215 L 265,248 L 235,248 L 222,215 Z" fill="#15803d" />
+    <!-- White center ink circle and slit -->
+    <circle cx="250" cy="200" r="7" fill="#ffffff" />
+    <line x1="250" y1="150" x2="250" y2="193" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
+
+    <!-- 5. Open Book Wings (Al-Qur'an & Kitab Ilmu) -->
+    <!-- Green Upper Wings -->
+    <path d="M 250,245 Q 170,225 105,180 Q 185,260 250,260 Q 315,260 395,180 Q 330,225 250,245 Z" 
+          fill="#16a34a" filter="url(#softGlow)" />
+
+    <!-- Orange Lower Wings -->
+    <path d="M 250,262 Q 180,262 80,205 Q 180,290 250,290 Q 320,290 420,205 Q 320,262 250,262 Z" 
+          fill="#f97316" />
+
+    <!-- 6. Crossed Rehal / Wooden Stand at the base -->
+    <path d="M 205,310 L 250,260 L 295,310 L 275,310 L 250,282 L 225,310 Z" fill="#ea580c" />
+    <path d="M 195,310 L 220,310 L 250,275 L 280,310 L 305,310 L 250,250 Z" fill="#c2410c" opacity="0.3" />
+
+    <!-- 7. Typography: AL MUMTAZ BOARDING SCHOOL -->
+    <text x="250" y="375" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-weight="900" font-size="44" fill="#e25822" letter-spacing="1.5">
+      AL MUMTAZ
+    </text>
+    <text x="250" y="410" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-weight="700" font-size="28" fill="#e25822" letter-spacing="4">
+      BOARDING SCHOOL
+    </text>
+  </g>
+</svg>

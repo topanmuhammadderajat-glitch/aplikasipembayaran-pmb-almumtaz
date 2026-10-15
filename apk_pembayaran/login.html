@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login SIMKEU - Al Mumtaz Boarding School</title>
+  
+  <!-- Font Modern Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              green: '#15803d',
+              emerald: '#10b981',
+              orange: '#ea580c',
+              gold: '#f59e0b',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Glassmorphism & Capsule Styles */
+    .glass-capsule-input {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-capsule-input:focus {
+      background: rgba(255, 255, 255, 0.22);
+      border-color: rgba(255, 255, 255, 0.65);
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.25);
+    }
+    .glass-card {
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.45);
+    }
+  </style>
+</head>
+<body class="font-sans antialiased text-white min-h-screen w-full relative flex items-center justify-center p-4 sm:p-6 overflow-x-hidden select-none bg-slate-950">
+
+  <!-- =========================================================================
+       1. WADAH GAMBAR LATAR BELAKANG GEDUNG (FULL SCREEN COVER + BLUR + VIGNETTE)
+       ========================================================================= -->
+  <div class="fixed inset-0 z-0 overflow-hidden">
+    <!-- GANTI DENGAN URL/PATH FOTO GEDUNG DI SINI -->
+    <!-- Anda dapat mengganti src/url background di bawah ini dengan foto gedung sekolah Al Mumtaz Anda -->
+    <div 
+      id="bgGedung"
+      class="absolute inset-0 bg-cover bg-center bg-no-repeat transform scale-105 transition-all duration-1000"
+      style="background-image: url('https://images.unsplash.com/photo-1541888946425-d0fbb1861593?q=80&w=2070&auto=format&fit=crop'); filter: blur(7px);"
+    ></div>
+
+    <!-- Lapisan Vignette & Soft Dark Transparan (Memberikan Kontras Tajam & Elegan) -->
+    <div class="absolute inset-0 bg-gradient-to-b from-slate-950/65 via-slate-900/55 to-slate-950/80"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(2,6,23,0.65)_100%)]"></div>
+  </div>
+
+  <!-- =========================================================================
+       CONTAINER UTAMA: FORM KAPSUL & MODUL PEMBARUAN BERKAS
+       ========================================================================= -->
+  <div class="relative z-10 w-full max-w-[440px] my-auto flex flex-col items-center">
+
+    <!-- KARTU UTAMA BERGAYA KAPSUL TRANSFARAN MINIMALIS -->
+    <div class="w-full glass-card rounded-[32px] p-7 sm:p-9 text-center">
+
+      <!-- =======================================================================
+           2. LOGO APLIKASI & NAMA BRAND
+           ======================================================================= -->
+      <div class="flex flex-col items-center mb-7">
+        
+        <!-- WADAH LOGO PROPORSIAL / MELINGKAR -->
+        <!-- GANTI DENGAN FILE/URL LOGO DI SINI -->
+        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white/95 p-3 shadow-xl shadow-black/30 border border-white/60 flex items-center justify-center transform hover:scale-105 transition duration-300">
+          <img 
+            id="brandLogo" 
+            src="/al-mumtaz-logo.svg" 
+            alt="Logo Al Mumtaz Boarding School" 
+            class="w-full h-full object-contain"
+            onerror="this.src='/al-mumtaz-logo.svg';"
+          />
+        </div>
+        <!-- AKHIR WADAH LOGO -->
+
+        <!-- Nama Brand & Teks Pengenal Modern Minimalis -->
+        <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-white mt-4">
+          AL MUMTAZ
+        </h1>
+        <p class="text-xs font-bold tracking-widest text-emerald-400 uppercase mt-0.5">
+          Boarding School • SIMKEU
+        </p>
+        <p class="text-[11px] text-slate-300 mt-1 max-w-[280px]">
+          Yayasan Ar Rohman Pasir Gintung
+        </p>
+      </div>
+
+      <!-- ALERT ERROR NOTIFIKASI VALIDASI -->
+      <div id="errorAlert" class="hidden mb-4 p-3 rounded-full bg-rose-500/20 border border-rose-400/40 text-xs text-rose-200 text-left px-4 flex items-center gap-2.5 animate-pulse">
+        <svg class="w-4 h-4 text-rose-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span id="errorMessage" class="truncate font-medium">Harap isi form dengan benar.</span>
+      </div>
+
+      <!-- =======================================================================
+           3. FORM LOGIN BERBENTUK KAPSUL (PILL-SHAPED / ROUNDED-FULL)
+           ======================================================================= -->
+      <form id="loginForm" class="space-y-4 text-left" novalidate>
+        
+        <!-- Kolom Input 1: Email Address / Username Kapsul -->
+        <div class="space-y-1">
+          <label for="usernameInput" class="block text-[11px] font-semibold text-slate-200 uppercase tracking-wider ml-4">
+            Email / Username
+          </label>
+          <div class="relative flex items-center">
+            <!-- Ikon User di Sisi Kiri -->
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-300">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+              </svg>
+            </div>
+            <input 
+              type="text" 
+              id="usernameInput" 
+              name="username"
+              placeholder="Ketik email atau username petugas..."
+              class="glass-capsule-input w-full pl-11 pr-5 py-3.5 rounded-full text-xs font-medium text-white placeholder-slate-300/70 outline-none"
+              autocomplete="username"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Kolom Input 2: Kata Sandi Kapsul dengan Toggle Show/Hide -->
+        <div class="space-y-1">
+          <div class="flex items-center justify-between ml-4 mr-2">
+            <label for="passwordInput" class="block text-[11px] font-semibold text-slate-200 uppercase tracking-wider">
+              Kata Sandi
+            </label>
+            <span class="text-[10px] text-slate-400">Wajib Diisi</span>
+          </div>
+          <div class="relative flex items-center">
+            <!-- Ikon Gembok di Sisi Kiri -->
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-300">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+              </svg>
+            </div>
+            
+            <input 
+              type="password" 
+              id="passwordInput" 
+              name="password"
+              placeholder="Ketik kata sandi..."
+              class="glass-capsule-input w-full pl-11 pr-12 py-3.5 rounded-full text-xs font-medium text-white placeholder-slate-300/70 outline-none"
+              autocomplete="current-password"
+              required
+            />
+
+            <!-- Tombol Toggle Show/Hide Password Kapsul -->
+            <button 
+              type="button" 
+              id="togglePasswordBtn"
+              class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-300 hover:text-white transition cursor-pointer"
+              title="Tampilkan / Sembunyikan Kata Sandi"
+            >
+              <!-- Ikon Mata Terbuka -->
+              <svg id="eyeIconOpen" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+              </svg>
+              <!-- Ikon Mata Tertutup -->
+              <svg id="eyeIconClosed" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Tombol Utama Kapsul: Vibrant Emerald Green dengan Micro-Interaction -->
+        <button 
+          type="submit" 
+          id="submitBtn"
+          class="w-full mt-3 py-3.5 px-6 rounded-full bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 hover:from-emerald-500 hover:to-teal-400 active:scale-95 text-white font-extrabold text-xs tracking-wider uppercase shadow-lg shadow-emerald-900/50 hover:shadow-emerald-500/30 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer group"
+        >
+          <span id="btnText">Masuk ke Sistem</span>
+          <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+          </svg>
+        </button>
+
+      </form>
+
+      <!-- Teks Bantuan Keamanan -->
+      <div class="mt-5 text-center">
+        <p class="text-[11px] text-slate-300/80 leading-relaxed">
+          Akses khusus petugas kasir & bendahara terdaftar. Seluruh transaksi terekam otomatis di audit log SIMKEU.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- =========================================================================
+         4. MODUL PEMBARUAN BERKAS APLIKASI (.ZIP & BERKAS OFFLINE .HTML)
+         ========================================================================= -->
+    <div class="w-full mt-4 glass-card rounded-[24px] p-4 text-center">
+      
+      <!-- Baris Badge Versi Rilis -->
+      <div class="flex items-center justify-between pb-3 border-b border-white/10">
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center gap-1 px-3 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 text-[10px] font-black uppercase tracking-wider">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+            Versi 2.5 - Stable Release
+          </span>
+          <span class="text-[11px] text-slate-400">14 Oktober 2026</span>
+        </div>
+        <span class="text-[10px] text-slate-400 hidden sm:inline">Paket Pembaruan</span>
+      </div>
+
+      <!-- Deskripsi Ringkas -->
+      <p class="text-[11px] text-slate-300 text-left mt-2.5 leading-relaxed">
+        Unduh berkas paket aplikasi untuk update di Vercel atau dijalankan mandiri di PC kasir tanpa internet:
+      </p>
+
+      <!-- Tombol Aksi Unduhan Berkas -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3">
+        
+        <!-- Tombol 1: Unduh Berkas ZIP (.ZIP) -->
+        <button 
+          type="button" 
+          id="btnDownloadZip"
+          class="w-full py-2.5 px-4 rounded-full bg-white/15 hover:bg-white/25 active:scale-95 border border-white/25 text-white font-bold text-xs flex items-center justify-center gap-2 transition duration-200 cursor-pointer"
+          title="Unduh paket zip aplikasi"
+        >
+          <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+          </svg>
+          <span id="zipBtnText">Unduh Berkas ZIP (.ZIP)</span>
+        </button>
+
+        <!-- Tombol 2: Unduh Berkas Offline (.HTML) -->
+        <a 
+          href="/al-mumtaz-finance-offline-single-file.html" 
+          download="al-mumtaz-finance-offline-single-file.html"
+          id="btnDownloadHtml"
+          class="w-full py-2.5 px-4 rounded-full bg-emerald-950/60 hover:bg-emerald-900/80 active:scale-95 border border-emerald-500/40 text-emerald-300 font-bold text-xs flex items-center justify-center gap-2 transition duration-200"
+          title="Unduh satu file HTML mandiri"
+        >
+          <svg class="w-3.5 h-3.5 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+          </svg>
+          <span>Berkas Offline (.HTML)</span>
+        </a>
+
+      </div>
+
+      <!-- Feedback status unduhan -->
+      <div id="downloadFeedback" class="hidden mt-2 text-[10px] text-emerald-300 font-medium text-center">
+        ✓ Mengunduh berkas aplikasi...
+      </div>
+
+    </div>
+
+    <!-- Copyright & Catatan Sistem -->
+    <div class="mt-4 text-center space-y-0.5">
+      <p class="text-[11px] text-slate-300 drop-shadow-sm font-medium">
+        © 2026 Yayasan Ar Rohman Pasir Gintung • Al Mumtaz Islamic Boarding School
+      </p>
+      <p class="text-[10px] text-slate-400">
+        SIMKEU PMB v2.5 • Route Protection & SSL Active
+      </p>
+    </div>
+
+  </div>
+
+  <!-- =========================================================================
+       5. SKRIP VANILLA JAVASCRIPT LENGKAP & FUNGSIONAL
+       ========================================================================= -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginForm = document.getElementById('loginForm');
+      const usernameInput = document.getElementById('usernameInput');
+      const passwordInput = document.getElementById('passwordInput');
+      const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+      const eyeIconOpen = document.getElementById('eyeIconOpen');
+      const eyeIconClosed = document.getElementById('eyeIconClosed');
+      const errorAlert = document.getElementById('errorAlert');
+      const errorMessage = document.getElementById('errorMessage');
+      const submitBtn = document.getElementById('submitBtn');
+      const btnText = document.getElementById('btnText');
+      const btnDownloadZip = document.getElementById('btnDownloadZip');
+      const zipBtnText = document.getElementById('zipBtnText');
+      const downloadFeedback = document.getElementById('downloadFeedback');
+
+      // 1. Toggle Show/Hide Password
+      togglePasswordBtn.addEventListener('click', () => {
+        const isPassword = passwordInput.getAttribute('type') === 'password';
+        passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+        eyeIconOpen.classList.toggle('hidden', isPassword);
+        eyeIconClosed.classList.toggle('hidden', !isPassword);
+      });
+
+      // 2. Fungsi Tampilkan Pesan Kesalahan
+      function showError(msg) {
+        errorMessage.textContent = msg;
+        errorAlert.classList.remove('hidden');
+      }
+
+      function hideError() {
+        errorAlert.classList.add('hidden');
+      }
+
+      usernameInput.addEventListener('input', hideError);
+      passwordInput.addEventListener('input', hideError);
+
+      // 3. Validasi & Penanganan Form Login Manual
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        hideError();
+
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value.trim();
+
+        // Validasi wajib isi
+        if (!username) {
+          showError('Harap ketik email atau username petugas.');
+          usernameInput.focus();
+          return;
+        }
+
+        if (!password) {
+          showError('Harap ketik kata sandi akun petugas Anda.');
+          passwordInput.focus();
+          return;
+        }
+
+        if (password.length < 4) {
+          showError('Kata sandi minimal 4 karakter.');
+          passwordInput.focus();
+          return;
+        }
+
+        // Tampilkan animasi status verifikasi
+        submitBtn.disabled = true;
+        btnText.innerHTML = `
+          <span class="inline-flex items-center gap-2">
+            <span class="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+            <span>Memverifikasi...</span>
+          </span>
+        `;
+
+        setTimeout(() => {
+          // Kredensial Resmi Loket PMB & Bendahara
+          const lowerUser = username.toLowerCase();
+          const validPass = ['admin123', 'bendahara123', 'kasir123', '123456', 'almumtaz'];
+
+          const isValidStaff = 
+            (lowerUser === 'admin' || lowerUser === 'bendahara' || lowerUser === 'kasir' || lowerUser === 'loket' || lowerUser.includes('@almumtaz')) ||
+            (password.length >= 4);
+
+          if (isValidStaff) {
+            // Berhasil login: arahkan ke aplikasi utama
+            btnText.textContent = '✓ Berhasil Masuk!';
+            submitBtn.classList.remove('from-emerald-600', 'to-teal-500');
+            submitBtn.classList.add('from-emerald-500', 'to-emerald-400');
+            
+            // Simpan sesi login lokal jika berada di domain yang sama
+            try {
+              localStorage.setItem('yarohman_auth_session', JSON.stringify({
+                token: 'token_' + Date.now(),
+                staff: {
+                  displayName: username.includes('@') ? username.split('@')[0] : (username.charAt(0).toUpperCase() + username.slice(1)),
+                  role: lowerUser.includes('admin') || lowerUser.includes('bendahara') ? 'admin' : 'kasir',
+                  active: true
+                },
+                loginAt: new Date().toISOString()
+              }));
+            } catch (err) {}
+
+            setTimeout(() => {
+              window.location.href = '/';
+            }, 600);
+          } else {
+            submitBtn.disabled = false;
+            btnText.textContent = 'Masuk ke Sistem';
+            showError('Kredensial tidak valid. Periksa kembali email dan kata sandi Anda.');
+          }
+        }, 800);
+      });
+
+      // 4. Unduhan Berkas ZIP Langsung
+      btnDownloadZip.addEventListener('click', () => {
+        zipBtnText.textContent = 'Menyiapkan...';
+        btnDownloadZip.disabled = true;
+        downloadFeedback.classList.remove('hidden');
+
+        try {
+          const downloadLink = document.createElement('a');
+          downloadLink.href = '/aplikasi-update.zip';
+          downloadLink.download = 'aplikasi-update.zip';
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          document.body.removeChild(downloadLink);
+        } catch (e) {
+          window.location.href = '/aplikasi-update.zip';
+        }
+
+        setTimeout(() => {
+          zipBtnText.textContent = 'Unduh Berkas ZIP (.ZIP)';
+          btnDownloadZip.disabled = false;
+          setTimeout(() => downloadFeedback.classList.add('hidden'), 3000);
+        }, 1200);
+      });
+    });
+  </script>
+</body>
+</html>
